@@ -20,8 +20,8 @@ $(document).ready(function(){
 			        	$("#noeud").empty().append("<label>Noeud : </label>\
 												 <select id='change_noeud'>\
 													<option value=''>(choisissez)</option>\
-													<option value='noeud_1'>Noeud 1</option>\
-													<option value='noeud_2'>Noeud 2</option>\
+													<option value='"+res[0]+"'>"+res[0]+"</option>\
+													<option value='"+res[1]+"'>"+res[1]+"</option>\
 												 </select>" );
 	        									}
 	   				 });
@@ -29,7 +29,7 @@ $(document).ready(function(){
 	 $('#noeud').on("change", "#change_noeud", function () {
 	  var params = {
 	       		action: 'change_noeud',
-	       		value: $("#site").val()
+	       		noeud: $("#change_noeud").val()
 	   						 };
 	   			$.ajax({
 			        url: 'mango.php',
@@ -42,8 +42,8 @@ $(document).ready(function(){
 			        	$("#capteur").empty().append(" <label>Capteur : </label>\
 												 <select id='change_capteur'>\
 													<option value=>(choisissez)</option>\
-													<option value='température extérieur'>Température extérieur</option>\
-													<option value='humidité'>Humidité</option>\
+													<option value='"+res[0]+"'>"+res[0]+"</option>\
+													<option value='"+res[1]+"'>"+res[1]+"</option>\
 												 </select></div>" );
 	        									}
 	   				 });
@@ -187,14 +187,14 @@ function requestData() {
 
       var params = {
 	       		action: 'send_data',
-	       		value_site: $("#site").val(),
+	       		//value_site: $("#site").val(), ne sert à rien vu qu'un seul site 	
 	       		value_noeud:$("#change_noeud").val(),
-	       		value_time: $("#change_time").val(),
-	       		value_capteur: $("#change_capteur").val(),
-	       		value_hour_start: $("#hour_start").val(),
-	       		value_hour_end: $("#hour_end").val(),
-	       		date_start: $("#date_start").val(),
-	       		date_end: $("#date_end").val()
+	       		//value_time: $("#change_time").val(),
+	       		value_capteur: $("#change_capteur").val()//,
+	       		//value_hour_start: $("#hour_start").val(),
+	       		//value_hour_end: $("#hour_end").val(),
+	       		//date_start: $("#date_start").val(),
+	       		//date_end: $("#date_end").val()
 	   						 };
 
     $.ajax({
