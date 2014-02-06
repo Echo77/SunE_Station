@@ -162,14 +162,9 @@ function requestData() {
         legend: {
             enabled: false
         },
-        xAxis: {
-                type: 'datetime',
-                dateTimeLabelFormats: { // don't display the dummy year
-                    month: '%e. %b',
-                    year: '%b'
-                }
-                },
-
+        xAxis: {    
+	        type: 'datetime'
+	    },
         yAxis: {
             minPadding: 0.2,
             maxPadding: 0.2,
@@ -184,7 +179,6 @@ function requestData() {
             minTickInterval: 1
         },
         series: [{
-            name: 'datetime',
             color: '#57A000'
         }]
     };

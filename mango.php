@@ -10,7 +10,6 @@
 	//$value_site = isset($_POST['value_site']) ?  $_POST['value_site'] : false;
 	$value_noeud = isset($_POST['value_noeud']) ?  $_POST['value_noeud'] : false;
 	$value_capteur = isset($_POST['value_capteur']) ?  $_POST['value_capteur'] : false;
-
 		
 		
 
@@ -59,13 +58,53 @@
 		//$result = $col->find();
 
 	 	$cursor = $collection->selectCollection('paris.'.$value_noeud)->find();
+	 	$cursor->sort(array('date' => 1));
 	 	$res = array();
 	    foreach ($cursor as $document) {
-	        $res['data'][] = $document['temperature'];
+	        $res['data'][] = array(strtotime($document['date']), $document['temperature']);
 	    }
+	    $count = count($res['data']);
+
 	    echo json_encode($res);
 	}
 
+	if(isset($_GET['test']) && $_GET['test'] == 'true') {
+		for ( $i = 0; $i < 50; $i++ )
+	    {
+			//[Date.UTC(1971,  0,  1), 0.81],
+			//AAAA-MM-JJ HH:MM:SS
+			$an = 2014;
+			$mo = rand(1,12);
+			$jo = rand(1,27);
+			$he = rand(0,23);
+			$mi = rand(0,59);
+			$se = rand(0,59);
+			if($mo<10) {
+				$mo = '0'.$mo;
+			}
+			if($jo<10) {
+				$jo = '0'.$jo;
+			}
+			if($he<10) {
+				$he = '0'.$he;
+			}
+			if($mi<10) {
+				$mi = '0'.$mi;
+			}
+			if($se<10) {
+				$se = '0'.$se;
+			}
+			$str = $an.'-'.$mo.'-'.$jo.' '.$he.':'.$mi.':'.$se;
+			$collection->paris->noeud1->insert( array(
+			  "capteur" => "TEMP1",
+			  "type" => "exterieur",
+			  "date" => $str,
+			  "location" => "paris",
+			  "temperature" => rand(-10,20)) 
+			);
+		}
+		echo "done";
+	}
 
 
     /*
