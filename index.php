@@ -57,12 +57,13 @@ select, input[type="file"] {
 		    <div id="noeud"></div>
 		    <div id="capteur"></div>
 		 </div>
+     <!--
 		 <div class="col-md-4">
 		 	<div id="time_start"></div>
 		 </div>
 
   		<div class="col-md-4">
-  			<div id="time_end"></div>
+  			<div id="time_end"></div>-->
   			</br>
   			<div id="send"><button type="button" class="btn btn-danger" id="request_grap">Envoyer</button></div>
   		</div>

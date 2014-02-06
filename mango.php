@@ -61,7 +61,7 @@
 	 	$cursor = $collection->selectCollection('paris.'.$value_noeud)->find();
 	 	$res = array();
 	    foreach ($cursor as $document) {
-	        $res[] = $document['temperature'];
+	        $res['data'][] = $document['temperature'];
 	    }
 	    echo json_encode($res);
 	}

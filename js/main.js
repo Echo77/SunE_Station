@@ -16,13 +16,15 @@ $(document).ready(function(){
 			       dataType: 'json',
 
 			        success: function(res) {
-			        	
-			        	$("#noeud").empty().append("<label>Noeud : </label>\
+			        	var str = "<label>Noeud : </label>\
 												 <select id='change_noeud'>\
-													<option value=''>(choisissez)</option>\
-													<option value='"+res[0]+"'>"+res[0]+"</option>\
-													<option value='"+res[1]+"'>"+res[1]+"</option>\
-												 </select>" );
+													<option value=''>(choisissez)</option>\ ";
+						$.each(res, function( index, value ) {
+						  str+= "<option value='"+value+"'>"+value+"</option>\ ";
+						});
+						str+="</select>";
+
+			        	$("#noeud").empty().append(str);
 	        									}
 	   				 });
 	    });
@@ -39,12 +41,15 @@ $(document).ready(function(){
 			       dataType: 'json',
 
 			        success: function(res) {
-			        	$("#capteur").empty().append(" <label>Capteur : </label>\
+			        	var str = " <label>Capteur : </label>\
 												 <select id='change_capteur'>\
-													<option value=>(choisissez)</option>\
-													<option value='"+res[0]+"'>"+res[0]+"</option>\
-													<option value='"+res[1]+"'>"+res[1]+"</option>\
-												 </select></div>" );
+													<option value=>(choisissez)</option>\ ";
+						$.each(res, function( index, value ) {
+						  str+= "<option value='"+value+"'>"+value+"</option>\ ";
+						});
+						str+="</select></div>";
+
+			        	$("#capteur").empty().append(str);
 	        									}
 	   				 });
 	    });
@@ -175,7 +180,7 @@ function requestData() {
                     color: '#57A000'
                 }
             },
-            min : 0,
+            //min : 0,
             minTickInterval: 1
         },
         series: [{
@@ -203,8 +208,8 @@ function requestData() {
         data: params,
         cache: false,
         dataType: 'json',
-        success: function(points) {
-            options.series[0].data = points;
+        success: function(res) {
+            options.series[0] = res;
             chart = new Highcharts.Chart(options);
             
         }
