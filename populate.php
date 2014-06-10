@@ -16,7 +16,7 @@
   //function to populate the database with random values.
   function populate() {
 
-    $connection = new MongoClient();
+    $connection = new MongoClient("mongodb://heroku_app26227391:574taenuasckhu7sve56lnehmt@ds041178.mongolab.com:41178/heroku_app2622739");
     $collection = $connection->sune;
     for ( $i = 0; $i < 500; $i++ )
       {
