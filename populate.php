@@ -1,8 +1,8 @@
 <?php
 
-  $mongo_url = parse_url(getenv("MONGO_URL"));
+  $mongo_url = parse_url(getenv("MONGO_URI"));
   $dbname = str_replace("/", "", $mongo_url["path"]);
-  $connection = new Mongo(getenv("MONGO_URL"));
+  $connection = new Mongo(getenv("MONGO_URI"));
 
   if(isset($_GET['action']) && $_GET['action'] == 'populate')
     populate($connection);
