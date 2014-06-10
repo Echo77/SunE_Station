@@ -14,3 +14,6 @@ Accéder à l'interface de visualisation depuis un navigateur web en tapant l'UR
 Une fois sur la page web, utiliser le bouton "Ajouter des données aléatoires" afin de peupler la base de données.
 Le bouton "Supprimer des données" permet de remettre à 0 la base de données en supprimant toutes les simulations. 
 Ces deux boutons sont temporaires, en attendant d'obtenir directement les données issues des capteurs.
+
+Vous pouvez retrouver une démo en ligne accessible directement depuis cette URL : 
+	http://thawing-shore-6106.herokuapp.com/

@@ -1,12 +1,14 @@
 <?php
 
-  if(isset($_GET['action']) && $_GET['action'] == 'populate')
-    populate();
-  if(isset($_GET['action']) && $_GET['action'] == 'delete') 
-    del();
+  $mongo_url = parse_url(getenv("MONGO_URL"));
+  $dbname = str_replace("/", "", $mongo_url["path"]);
+  $connection = new MongoClient(getenv("MONGO_URL"));
 
-  function del() {
-    $connection = new MongoClient();
+  if(isset($_GET['action']) && $_GET['action'] == 'populate')
+    populate($connection);
+  if(isset($_GET['action']) && $_GET['action'] == 'delete') 
+    del($connection);
+  function del($connection) {
     $collection = $connection->sune;
 
     $cursor = $collection->paris->noeud1->remove();
@@ -14,9 +16,7 @@
     echo "Données supprimées";
   }
   //function to populate the database with random values.
-  function populate() {
-
-    $connection = new MongoClient("mongodb://heroku_app26227391:574taenuasckhu7sve56lnehmt@ds041178.mongolab.com:41178/heroku_app2622739");
+  function populate($connection) {
     $collection = $connection->sune;
     for ( $i = 0; $i < 500; $i++ )
       {
