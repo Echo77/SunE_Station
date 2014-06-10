@@ -10,9 +10,10 @@
 	//$value_site = isset($_POST['value_site']) ?  $_POST['value_site'] : false;
 	$value_noeud = isset($_POST['value_noeud']) ?  $_POST['value_noeud'] : false;
 	$value_capteur = isset($_POST['value_capteur']) ?  $_POST['value_capteur'] : false;
-		
-		
-
+	$value_hour_start = isset($_POST['value_hour_start']) ?  $_POST['value_hour_start'] : '00';
+	$value_hour_end = isset($_POST['value_hour_end']) ?  $_POST['value_hour_end'] : '00';
+	$date_start = isset($_POST['date_start']) ?  $_POST['date_start'] : false;
+	$date_end = isset($_POST['date_end']) ?  $_POST['date_end'] : false;
 
 	if($action=="change_site"){
 		// Requete pour obtenir la liste des noeuds en fonction du site
@@ -42,38 +43,56 @@
 	else if($action=="change_time")
 	{	
 		// Requete pour obtenir la liste du temps en fonction du site
-		echo json_encode("caca");
+		echo json_encode("");
 	}
 	else if($action=="change")
 	{	
 		// Useless
-		echo json_encode("caca");
+		echo json_encode("");
 	}
+
+
+
 	else if($action=="send_data")
 	{	
-		// Useless
-		$col = $collection->paris->$value_noeud->find();
+		if($date_start == false) {
+			$start = '0000-00-00 01:00:00';
+		} else {
+			$date_start = explode('/', $date_start);
+			$start = $date_start[2].'-'.$date_start[0].'-'.$date_start[1].' '.$value_hour_start.':00:00';
+		}
 
-		$params = array('capteur' => "TEMP1");
-		//$result = $col->find();
+		if(!$date_end) {
+			$end = date("Y-m-d H:i:s");
+		} else {
+			$date_end = explode('/', $date_end);
+			$end = $date_end[2].'-'.$date_end[0].'-'.$date_end[1].' '.$value_hour_end.':00:00';			
+		}
 
-	 	$cursor = $collection->selectCollection('paris.'.$value_noeud)->find();
+
+		$params = array('date' => array( '$gt' => $start, '$lt' => $end), 'capteur' => $value_capteur);
+
+	 	$cursor = $collection->selectCollection('paris.'.$value_noeud)->find($params);
 	 	$cursor->sort(array('date' => 1));
 	 	$res = array();
+
+
 	    foreach ($cursor as $document) {
-	        $res['data'][] = array(strtotime($document['date']), $document['temperature']);
+	        $res['d']['data'][] = array(1000*strtotime($document['date']), $document['temperature']); //strtotime
+
 	    }
-	    $count = count($res['data']);
+
+	    $res['l'][0] = 'Température °C';
 
 	    echo json_encode($res);
 	}
 
 	if(isset($_GET['test']) && $_GET['test'] == 'true') {
-		for ( $i = 0; $i < 50; $i++ )
+		for ( $i = 0; $i < 250; $i++ )
 	    {
 			//[Date.UTC(1971,  0,  1), 0.81],
 			//AAAA-MM-JJ HH:MM:SS
-			$an = 2014;
+			$an = rand(2010,2015);
 			$mo = rand(1,12);
 			$jo = rand(1,27);
 			$he = rand(0,23);
