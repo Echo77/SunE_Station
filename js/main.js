@@ -3,33 +3,33 @@ $(document).ready(function(){
 	
 	$('#send').hide();
 
-	 $('#site').change(function () {
-	 var params = {
-	       		action: 'change_site',
-	       		value: $("#site").val()
-	   						 };
-	   			$.ajax({
-			        url: 'mango.php',
-			        type: 'POST', 
-			        data: params,
-			        cache: false,
-			       dataType: 'json',
+	$('#site').change(function () {
+		var params = {
+	   		action: 'change_site',
+	   		value: $("#site").val()
+							 };
+				$.ajax({
+		        url: 'mango.php',
+		        type: 'POST', 
+		        data: params,
+		        cache: false,
+		       dataType: 'json',
 
-			        success: function(res) {
-			        	var str = "<label>Noeud : </label>\
-												 <select id='change_noeud'>\
-													<option value=''>(choisissez)</option>\ ";
-						$.each(res, function( index, value ) {
-						  str+= "<option value='"+value+"'>"+value+"</option>\ ";
-						});
-						str+="</select>";
+		        success: function(res) {
+		        	var str = "<label>Noeud : </label>\
+											 <select id='change_noeud'>\
+												<option value=''>(choisissez)</option>\ ";
+					$.each(res, function( index, value ) {
+					  str+= "<option value='"+value+"'>"+value+"</option>\ ";
+					});
+					str+="</select>";
 
-			        	$("#noeud").empty().append(str);
-	        									}
-	   				 });
-	    });
-	 $('#noeud').on("change", "#change_noeud", function () {
-	  var params = {
+		        	$("#noeud").empty().append(str);
+	    									}
+					 });
+	});
+	$('#noeud').on("change", "#change_noeud", function () {
+		var params = {
 	       		action: 'change_noeud',
 	       		noeud: $("#change_noeud").val()
 	   						 };
@@ -52,10 +52,10 @@ $(document).ready(function(){
 			        	$("#capteur").empty().append(str);
 	        									}
 	   				 });
-	    });
+	});
 
-	 $('#capteur').on("change", "#change_capteur", function () {
-	  var params = {
+	$('#capteur').on("change", "#change_capteur", function () {
+		var params = {
 	       		action: 'change_time',
 	       		value: $("#site").val()
 	   						 };
@@ -137,79 +137,90 @@ $(document).ready(function(){
 
 	        									}
 	   				 });
-	    });
+	});
 	
-	  $('#send').click(function () {
-	  requestData();
+	$('#send').click(function () {
+		requestData();
+	});
+
+	function requestData() {
+
+	    var options = {
+	        chart: {
+	            renderTo: 'graph',
+	            defaultSeriesType: 'spline'
+	        },
+	        credits: {
+	            enabled: false
+	        },
+	        title: {
+	            text: 'Graphique du capteur \''+$("#change_capteur").val()+'\' du noeud \''+$("#change_noeud").val()+'\' en fonction du temps',
+	            style: {
+	                color: '#57A000'
+	            }
+	        },
+	        legend: {
+	            enabled: false
+	        },
+	        xAxis: {    
+		        type: 'datetime'
+		    },
+	        yAxis: {
+	            minPadding: 0.2,
+	            maxPadding: 0.2,
+	            title: {
+	                text:'',
+	                margin: 40,
+	                style: {
+	                    color: '#57A000'
+	                }
+	            },
+	            //min : 0,
+	            minTickInterval: 1
+	        },
+	        series: [{
+	            color: '#57A000'
+	        }]
+	    };
+
+
+	      var params = {
+		       		action: 'send_data',
+		       		//value_site: $("#site").val(), ne sert à rien vu qu'un seul site 	
+		       		value_noeud:$("#change_noeud").val(),
+		       		//value_time: $("#change_time").val(),
+		       		value_capteur: $("#change_capteur").val(),
+		       		value_hour_start: $("#hour_start").val(),
+		       		value_hour_end: $("#hour_end").val(),
+		       		date_start: $("#date_start").val(),
+		       		date_end: $("#date_end").val()
+		   						 };
+
+	    $.ajax({
+	        url: 'mango.php',
+	        type: 'POST',
+	        data: params,
+	        cache: false,
+	        dataType: 'json',
+	        success: function(res) {
+	            options.series[0] = res['d'];
+	            options.yAxis.title.text = res['l'][0];
+	            chart = new Highcharts.Chart(options);
+	            
+	        }
 	    });
-
-function requestData() {
-
-    var options = {
-        chart: {
-            renderTo: 'graph',
-            defaultSeriesType: 'spline'
-        },
-        credits: {
-            enabled: false
-        },
-        title: {
-            text: 'Graphique du capteur \''+$("#change_capteur").val()+'\' du noeud \''+$("#change_noeud").val()+'\' en fonction du temps',
-            style: {
-                color: '#57A000'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        xAxis: {    
-	        type: 'datetime'
-	    },
-        yAxis: {
-            minPadding: 0.2,
-            maxPadding: 0.2,
-            title: {
-                text:'',
-                margin: 40,
-                style: {
-                    color: '#57A000'
-                }
-            },
-            //min : 0,
-            minTickInterval: 1
-        },
-        series: [{
-            color: '#57A000'
-        }]
-    };
-
-
-      var params = {
-	       		action: 'send_data',
-	       		//value_site: $("#site").val(), ne sert à rien vu qu'un seul site 	
-	       		value_noeud:$("#change_noeud").val(),
-	       		//value_time: $("#change_time").val(),
-	       		value_capteur: $("#change_capteur").val(),
-	       		value_hour_start: $("#hour_start").val(),
-	       		value_hour_end: $("#hour_end").val(),
-	       		date_start: $("#date_start").val(),
-	       		date_end: $("#date_end").val()
-	   						 };
-
-    $.ajax({
-        url: 'mango.php',
-        type: 'POST',
-        data: params,
-        cache: false,
-        dataType: 'json',
-        success: function(res) {
-            options.series[0] = res['d'];
-            options.yAxis.title.text = res['l'][0];
-            chart = new Highcharts.Chart(options);
-            
-        }
-    });
-}
+	}
+	$("#populate").click(function() {
+		$.get( "populate.php?action=populate", function(data) {
+			alert(data);
+		});
+	});
+	$("#delete").click(function() {
+		$.get( "populate.php?action=delete", function(data) {
+			alert(data);
+		});
+	});
+	
 	
 });
 	    

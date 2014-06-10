@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
     <title>Sun-e Station</title>
@@ -37,12 +36,14 @@ select, input[type="file"] {
  <div class="row">
         <div class="col-md-8">
           <h1>Sun-e Station</h1>
-        <p class="lead">Description de votre application</p>
+          <div class="row">
+            <a id="populate" class="lead col-md-6">Ajouter des données aléatoires</a>
+            <a id="delete" class="lead col-md-6">Supprimer des données</a>
+          </div>
         </div>
         <div class="col-md-4"><img src="logo.jpg" width=50%></div>
       </div>
 </div>
-
 <h3>Choisissez vos options : </h3>
 <div class="row">
         <div class="col-md-4">
